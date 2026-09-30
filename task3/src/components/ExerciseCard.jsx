@@ -13,7 +13,7 @@ export default function ExerciseCard({ exercise, hidden, onStatus, onReset, onRe
     onStatus(exercise.id, next.length === exercise.sets ? 'Completed' : next.length ? 'In progress' : 'Planned')
   }
   return <article className="exercise-card" hidden={hidden} aria-label={exercise.name}>
-    <div className="card-top"><span className={`group-tag group-${exercise.group.toLowerCase()}`}>{exercise.group}</span><span className="equipment">{exercise.equipment}</span></div>
+    <div className="card-top"><span className="group-tag">{exercise.group}</span><span className="equipment">{exercise.equipment}</span></div>
     <h3>{exercise.name}</h3>
     <p className="prescription"><strong>{exercise.sets}</strong> sets <span>×</span> <strong>{exercise.target}</strong></p>
     <div className="set-heading"><span>SET PROGRESS</span><span>{completedSets.length} / {exercise.sets}</span></div>

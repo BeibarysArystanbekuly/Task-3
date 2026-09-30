@@ -1,4 +1,4 @@
-﻿import { useState } from 'react'
+import { useState } from 'react'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import ExerciseForm from './components/ExerciseForm.jsx'
@@ -63,9 +63,8 @@ export default function App() {
       <main id="main">
         <section className="page-heading">
           <div>
-            <p className="eyebrow">BUILD CONSISTENCY. ONE SET AT A TIME.</p>
-            <h1>Your workout.<br /><span>Your pace.</span></h1>
-            <p className="intro">Plan your exercises, track your sets, and make every rep count.</p>
+            <h1>Workout dashboard</h1>
+            <p className="intro">Manage your exercises and track your sets.</p>
           </div>
           <button
             className="primary-button add-button"

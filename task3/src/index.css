@@ -1,33 +1,27 @@
-/* Shared colors for the blue-and-white dashboard. */
-:root {
-  --page: #f4f8ff;
-  --surface: #ffffff;
-  --surface-soft: #eff6ff;
-  --border: #d7e3f3;
-  --border-strong: #b8cdec;
-  --text: #172d4d;
-  --muted: #526783;
+﻿:root {
+  --surface: #fff;
+  --border: #dce1e8;
+  --text: #202b3c;
+  --muted: #566477;
   --blue: #2563eb;
   --blue-dark: #1d4ed8;
-  --blue-soft: #dbeafe;
   --danger: #b42335;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: var(--text);
-  background: var(--page);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+  background: var(--surface);
   color-scheme: light;
 }
+
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
+h1, h2, h3, p { margin: 0; }
 button, input, select, textarea { font: inherit; }
 button, select { cursor: pointer; }
-button { transition: background .15s, border-color .15s, color .15s; }
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
-button:hover { filter: brightness(.96); }
-input, select, textarea { min-width: 0; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--surface); color: var(--text); padding: 11px 12px; }
-input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+button, input, select, textarea { border: 1px solid var(--border); border-radius: 4px; padding: 8px 12px; background: var(--surface); color: var(--text); }
+button:hover { border-color: var(--blue); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+input, select, textarea { min-width: 0; }
+input::placeholder, textarea::placeholder { color: var(--muted); }
 label { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--muted); }
-h1, h2, h3, p { margin: 0; }
+textarea { width: 100%; min-height: 80px; resize: vertical; }
 [hidden] { display: none !important; }
