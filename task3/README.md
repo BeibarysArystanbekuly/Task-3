@@ -89,4 +89,16 @@ Only functional components, props, useState, conditional rendering, and map are 
 
 ## Submission
 
-Provide the GitHub repository link, deployed application link, and a browser screenshot. Deployment and submission are not configured by this project yet.
+Provide the GitHub repository link, deployed application link, and a browser screenshot.
+
+## GitHub Pages deployment
+
+In the repository's Settings > Pages, set Build and deployment > Source to
+GitHub Actions. Commit and push the deployment configuration to main.
+The workflow at `.github/workflows/deploy.yml` installs dependencies in task3,
+runs lint and build, and publishes only task3/dist. It can also be run manually
+from the Actions tab.
+
+After a successful deployment, open https://beibarysarystanbekuly.github.io/Task-3/.
+Vite uses `/Task-3/` as the base path so JavaScript and CSS load under the
+repository URL. Do not publish the unbuilt repository root.
