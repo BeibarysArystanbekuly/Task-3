@@ -1,122 +1,117 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+﻿import { useState } from 'react'
+import Header from './components/Header.jsx'
+import Footer from './components/Footer.jsx'
+import ExerciseForm from './components/ExerciseForm.jsx'
+import ExerciseList from './components/ExerciseList.jsx'
+import WorkoutFilters from './components/WorkoutFilters.jsx'
+import WorkoutSummary from './components/WorkoutSummary.jsx'
+import { initialExercises } from './data/exercises.js'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [exercises, setExercises] = useState(initialExercises)
+  const [group, setGroup] = useState('All groups')
+  const [status, setStatus] = useState('All statuses')
+  const [reversed, setReversed] = useState(false)
+  const [formOpen, setFormOpen] = useState(false)
+
+  console.log('[render] Workout dashboard', { group, status, reversed, count: exercises.length })
+
+  const visibleCount = exercises.filter(exercise => (
+    (group === 'All groups' || exercise.group === group)
+    && (status === 'All statuses' || exercise.status === status)
+  )).length
+
+  function changeStatus(id, nextStatus) {
+    setExercises(current => current.map(exercise => (
+      exercise.id === id ? { ...exercise, status: nextStatus } : exercise
+    )))
+  }
+
+  function resetExercise(id) {
+    // A new key remounts only this card, resetting all of its local state.
+    setExercises(current => current.map(exercise => (
+      exercise.id === id
+        ? { ...exercise, resetVersion: exercise.resetVersion + 1, status: 'Planned' }
+        : exercise
+    )))
+  }
+
+  function addExercise(values) {
+    setExercises(current => [
+      ...current,
+      { ...values, id: crypto.randomUUID(), status: 'Planned', resetVersion: 0 },
+    ])
+    setGroup('All groups')
+    setStatus('All statuses')
+    setFormOpen(false)
+  }
+
+  function removeExercise(id) {
+    setExercises(current => current.filter(exercise => exercise.id !== id))
+  }
+
+  function clearFilters() {
+    setGroup('All groups')
+    setStatus('All statuses')
+    if (!exercises.length) setFormOpen(true)
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="app-shell">
+      <Header />
+      <main id="main">
+        <section className="page-heading">
+          <div>
+            <p className="eyebrow">BUILD CONSISTENCY. ONE SET AT A TIME.</p>
+            <h1>Your workout.<br /><span>Your pace.</span></h1>
+            <p className="intro">Plan your exercises, track your sets, and make every rep count.</p>
+          </div>
+          <button
+            className="primary-button add-button"
+            aria-expanded={formOpen}
+            onClick={() => setFormOpen(!formOpen)}
+          >
+            {formOpen ? 'Close form' : '+ Add exercise'}
+          </button>
+        </section>
 
-      <div className="ticks"></div>
+        <WorkoutSummary exercises={exercises} />
+        {formOpen && <ExerciseForm onAdd={addExercise} onClose={() => setFormOpen(false)} />}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <section aria-labelledby="exercises-heading">
+          <div className="section-heading">
+            <div className="list-heading">
+              <h2 id="exercises-heading">Exercise plan</h2>
+              <span className="count-pill" aria-live="polite">{visibleCount} exercises</span>
+            </div>
+            <button
+              className="secondary-button"
+              aria-pressed={reversed}
+              onClick={() => setReversed(!reversed)}
+            >
+              ↕ {reversed ? 'Restore order' : 'Reverse order'}
+            </button>
+          </div>
+          <WorkoutFilters
+            group={group}
+            status={status}
+            onGroupChange={setGroup}
+            onStatusChange={setStatus}
+          />
+          <ExerciseList
+            exercises={exercises}
+            group={group}
+            status={status}
+            reversed={reversed}
+            onStatus={changeStatus}
+            onReset={resetExercise}
+            onRemove={removeExercise}
+            onEmptyAction={clearFilters}
+          />
+        </section>
+        <Footer />
+      </main>
+    </div>
   )
 }
-
-export default App
